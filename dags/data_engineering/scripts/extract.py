@@ -4,9 +4,11 @@ from datetime import datetime
 import logging
 import os
 import requests
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from airflow.models import Variable
+
 
 # logging setup
 logging.basicConfig(level=logging.INFO)
@@ -19,11 +21,12 @@ now = datetime.now(KST).replace(microsecond=0, second=0, minute=0)
 base_date = now.strftime("%Y%m%d")
 base_time = now.strftime("%H%M")
 
+api_key = Variable.get("WEATHER_API_KEY")
 
 def fetch_weather_data(ti):
     try:
         logger.info("Step 1: fetching data from multiple weather API endpoints")
-        load_dotenv('/opt/airflow/.env')  # take environment variables from .env.
+        # load_dotenv('/opt/airflow/.env')  # take environment variables from .env.
 
         # setup a session with retry logic
         # Set up a session with retry logic
@@ -40,7 +43,7 @@ def fetch_weather_data(ti):
         # write code here
         for nx, ny in LOCATIONS:
             params = {
-                    'serviceKey': 'RhXURHVaUAqX9AS4dKYbnvOnegy8sGL1hWqwmUYZbv4QdBuStJWpVTcXUdquDSPp/vsHR1ItrM3JqEr92xP4jw==',
+                    'serviceKey': api_key,
                     'dataType': 'JSON',
                     'base_date': base_date,
                     'base_time': base_time,

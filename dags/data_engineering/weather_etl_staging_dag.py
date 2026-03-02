@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '/opt/airflow/dags/repo/dags/data_engineering')
 from airflow.models import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
