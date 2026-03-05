@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '/opt/airflow/dags/repo/dags/feature_engineering')
 from airflow.models import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
