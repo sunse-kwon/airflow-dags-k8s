@@ -15,7 +15,7 @@ def save_to_s3(df: pd.DataFrame, s3_key: str):
     buffer = io.BytesIO()
     df.to_parquet(buffer, index=True)
     buffer.seek(0)
-    s3.put_objective(Bucket=S3_BUCKET, Key=s3_key, Body=buffer.getvalue())
+    s3.put_object(Bucket=S3_BUCKET, Key=s3_key, Body=buffer.getvalue())
     logger.info(f'Saved features to s3://{S3_BUCKET}/{s3_key}')
     
 
