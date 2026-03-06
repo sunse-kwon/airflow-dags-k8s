@@ -44,6 +44,7 @@ def load_to_master_tables(ti):
         cursor.executemany("""
             INSERT INTO dim_date (base_date, year, month, day, day_of_week, is_holiday)
             VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
         """, date_values)
     
     # Dim Time
@@ -52,6 +53,7 @@ def load_to_master_tables(ti):
         cursor.executemany("""
             INSERT INTO dim_time (base_time, hour)
             VALUES (%s, %s)
+            ON CONFLICT DO NOTHING
         """, time_values)
     
     # Dim Location
@@ -64,6 +66,7 @@ def load_to_master_tables(ti):
         cursor.executemany("""
             INSERT INTO dim_location (nx, ny, admin_district_code, city, sub_address, effective_date, expiration_date, is_current)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
         """, location_values)
     
     # Dim Category
@@ -76,6 +79,7 @@ def load_to_master_tables(ti):
         cursor.executemany("""
             INSERT INTO dim_category (category_code, category_description, unit, effective_date, expiration_date, is_current)
             VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
         """, category_values)
     
     # --- Pre-Fetch Dimension IDs ---

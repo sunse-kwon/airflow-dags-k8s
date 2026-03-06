@@ -85,18 +85,14 @@ def feature_engineering(data:pd.DataFrame) -> pd.DataFrame:
         data['is_holiday'] = data['is_holiday'].replace({'TRUE': 1, 'FALSE': 0}).astype(int)
     # data['is_holiday'] = data['is_holiday'].astype(int)
     
-    # cast PTY from category to numeric before creating lag value.
-    data['PTY'] = pd.to_numeric(data['PTY'], errors='coerce')
     data['PTY_lag1'] = data['PTY'].shift(1)
     data['PTY_lag2'] = data['PTY'].shift(2)
 
     data['delay_hours_lag1'] = data['delay_hours'].shift(1)
     data['delay_hours_lag2'] = data['delay_hours'].shift(2)
     
-    
-    data = data.bfill()
+    data = data.fillna(method='bfill')
     return data
-
 
 def transform_features(ti):
 
@@ -123,7 +119,6 @@ def transform_features(ti):
             transformed_features.append(feature_added)
         except Exception as e:
             logger.error(f'failed transformation for {city}, see : {str(e)}')
-
     combined = pd.concat(transformed_features)
     s3_key = f'features/transformed/{ti.run_id}/features.parquet'
     save_to_s3(combined, s3_key)
